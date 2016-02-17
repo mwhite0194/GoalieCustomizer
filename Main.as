@@ -1,17 +1,25 @@
 package
 {
 	import adobe.utils.*;
+	
+	import fl.motion.Color;
+	
 	import flash.accessibility.*;
 	import flash.desktop.*;
 	import flash.display.*;
+	import flash.display.Bitmap;
+	import flash.display.BitmapData;
 	import flash.errors.*;
 	import flash.events.*;
+	import flash.events.MouseEvent;
 	import flash.external.*;
 	import flash.filters.*;
 	import flash.geom.*;
+	import flash.geom.ColorTransform;
 	import flash.globalization.*;
 	import flash.media.*;
 	import flash.net.*;
+	import flash.net.FileReference;
 	import flash.net.drm.*;
 	import flash.printing.*;
 	import flash.profiler.*;
@@ -23,78 +31,117 @@ package
 	import flash.text.ime.*;
 	import flash.ui.*;
 	import flash.utils.*;
+	import flash.utils.ByteArray;
 	import flash.xml.*;
+	
 	
 	public dynamic class Main extends flash.display.MovieClip
 	{
 		public function Main()
 		{
 			super();
-			addFrameScript(this.frame2);
-			return;
-		}
-/*		
-		public function colorOptionsCLICK(arg1:flash.events.TouchEvent):void
-		{
-			return;
-		}
-		
-		public function colorOptionsChoice(arg1:flash.events.TouchEvent):void
-		{
-			return;
-		}
-		
-		public function clickHandler(arg1:flash.events.TouchEvent):void
-		{
-			if (arg1.target != this.ColorOneChooser) 
-			{
-				if (arg1.target != this.ColorTwoChooser) 
-				{
-					if (arg1.target != this.ColorThreeChooser) 
-					{
-						if (arg1.target != this.ColorFourChooser) 
-						{
-							if (arg1.target != this.ColorFiveChooser) 
-							{
-								if (arg1.target != this.ColorSixChooser) 
-								{
-									if (arg1.target != this.ColorSevenChooser) 
-									{
-										if (arg1.target != this.ColorEightChooser) 
-										{
-											if (arg1.target != this.ColorNineChooser) 
-											{
-												if (arg1.target != this.ColorTenChooser) 
-												{
-													if (arg1.target != this.ColorElevenChooser) 
-													{
-														if (arg1.target != this.ColorTwelveChooser) 
-														{
-															if (arg1.target != this.ColorThirteenChooser) 
-															{
-																if (arg1.target != this.ColorFourteenChooser) 
-																{
-																	if (arg1.target != this.ColorFifteenChooser) 
-																	{
-																		if (arg1.target == this.ColorSixteenChooser) 
-																		{
-																			
-		public function export():void
-		{
+			initListeners();
 			
+			//Enable touch mode and disable numbers from being in way
+			Multitouch.inputMode = MultitouchInputMode.TOUCH_POINT;
+			nums.mouseChildren = false;
+			nums.mouseEnabled = false;
 		}
-	
-		public function save(arg1:flash.events.TouchEvent):void
+		
+		
+		public function initListeners():void
 		{
+			//Add event listeners to all color chooser array options
+			ColorOneChooser.addEventListener(MouseEvent.CLICK, colorHandler);	
+			ColorOneChooser.addEventListener(MouseEvent.MOUSE_OVER, menuAppear);
+			ColorOneChooser.addEventListener(MouseEvent.MOUSE_OUT, menuDisappear);
+			ColorTwoChooser.addEventListener(MouseEvent.CLICK, colorHandler);	
+			ColorTwoChooser.addEventListener(MouseEvent.MOUSE_OVER, menuAppear);
+			ColorTwoChooser.addEventListener(MouseEvent.MOUSE_OUT, menuDisappear);
+			ColorThreeChooser.addEventListener(MouseEvent.CLICK, colorHandler);	
+			ColorThreeChooser.addEventListener(MouseEvent.MOUSE_OVER, menuAppear);
+			ColorThreeChooser.addEventListener(MouseEvent.MOUSE_OUT, menuDisappear);
+			ColorFourChooser.addEventListener(MouseEvent.CLICK, colorHandler);	
+			ColorFourChooser.addEventListener(MouseEvent.MOUSE_OVER, menuAppear);
+			ColorFourChooser.addEventListener(MouseEvent.MOUSE_OVER, menuAppear);
+			ColorFiveChooser.addEventListener(MouseEvent.CLICK, colorHandler);	
+			ColorFiveChooser.addEventListener(MouseEvent.MOUSE_OVER, menuAppear);
+			ColorFiveChooser.addEventListener(MouseEvent.MOUSE_OUT, menuDisappear);
+			ColorSixChooser.addEventListener(MouseEvent.CLICK, colorHandler);	 
+			ColorSixChooser.addEventListener(MouseEvent.MOUSE_OVER, menuAppear);
+			ColorSixChooser.addEventListener(MouseEvent.MOUSE_OUT, menuDisappear);
+			ColorSevenChooser.addEventListener(MouseEvent.CLICK, colorHandler);	
+			ColorSevenChooser.addEventListener(MouseEvent.MOUSE_OVER, menuAppear);
+			ColorSevenChooser.addEventListener(MouseEvent.MOUSE_OUT, menuDisappear);
+			ColorEightChooser.addEventListener(MouseEvent.CLICK, colorHandler);	
+			ColorEightChooser.addEventListener(MouseEvent.MOUSE_OVER, menuAppear);
+			ColorEightChooser.addEventListener(MouseEvent.MOUSE_OUT, menuDisappear);
+			ColorNineChooser.addEventListener(MouseEvent.CLICK, colorHandler);	
+			ColorNineChooser.addEventListener(MouseEvent.MOUSE_OVER, menuAppear);
+			ColorNineChooser.addEventListener(MouseEvent.MOUSE_OUT, menuDisappear);
+			ColorTenChooser.addEventListener(MouseEvent.CLICK, colorHandler);	
+			ColorTenChooser.addEventListener(MouseEvent.MOUSE_OVER, menuAppear);
+			ColorTenChooser.addEventListener(MouseEvent.MOUSE_OUT, menuDisappear);
+			ColorElevenChooser.addEventListener(MouseEvent.CLICK, colorHandler);	
+			ColorElevenChooser.addEventListener(MouseEvent.MOUSE_OVER, menuAppear);
+			ColorElevenChooser.addEventListener(MouseEvent.MOUSE_OUT, menuDisappear);
+			ColorTwelveChooser.addEventListener(MouseEvent.CLICK, colorHandler);	
+			ColorTwelveChooser.addEventListener(MouseEvent.MOUSE_OVER, menuAppear);
+			ColorTwelveChooser.addEventListener(MouseEvent.MOUSE_OUT, menuDisappear);
+			ColorThirteenChooser.addEventListener(MouseEvent.CLICK, colorHandler);	
+			ColorThirteenChooser.addEventListener(MouseEvent.MOUSE_OVER, menuAppear);
+			ColorThirteenChooser.addEventListener(MouseEvent.MOUSE_OUT, menuDisappear);
+			ColorFourteenChooser.addEventListener(MouseEvent.CLICK, colorHandler);	
+			ColorFourteenChooser.addEventListener(MouseEvent.MOUSE_OVER, menuAppear);
+			ColorFourteenChooser.addEventListener(MouseEvent.MOUSE_OUT, menuDisappear);
 			
+			//Add event listeners to color options
+			BlackJpro.addEventListener(MouseEvent.CLICK, determineColor);
+			BlueJpro.addEventListener(MouseEvent.CLICK, determineColor);
+			WhiteJpro.addEventListener(MouseEvent.CLICK, determineColor);
+			RedJpro.addEventListener(MouseEvent.CLICK, determineColor);
+			NavyJpro.addEventListener(MouseEvent.CLICK, determineColor);
+			SportGoldJpro.addEventListener(MouseEvent.CLICK, determineColor);
+			YellowJpro.addEventListener(MouseEvent.CLICK, determineColor);
+			SilverJpro.addEventListener(MouseEvent.CLICK, determineColor);
+			OrangeJpro.addEventListener(MouseEvent.CLICK, determineColor);
+			MaroonJpro.addEventListener(MouseEvent.CLICK, determineColor);
+			BronzeJpro.addEventListener(MouseEvent.CLICK, determineColor);
+			ForestJpro.addEventListener(MouseEvent.CLICK, determineColor); 
+			AntGoldJpro.addEventListener(MouseEvent.CLICK, determineColor);
+			PurpleJpro.addEventListener(MouseEvent.CLICK, determineColor);
+			TealJpro.addEventListener(MouseEvent.CLICK, determineColor);
+			BrownJpro.addEventListener(MouseEvent.CLICK, determineColor); 
+			BuckyJpro.addEventListener(MouseEvent.CLICK, determineColor);
+			RetroTanJpro.addEventListener(MouseEvent.CLICK, determineColor);
+			WhiteWeave.addEventListener(MouseEvent.CLICK, determineColor);
+			BlackWeave.addEventListener(MouseEvent.CLICK, determineColor);
+			RedWeave.addEventListener(MouseEvent.CLICK, determineColor);
+			BlueWeave.addEventListener(MouseEvent.CLICK, determineColor);
+			NavyWeave.addEventListener(MouseEvent.CLICK, determineColor);
+			SportGoldWeave.addEventListener(MouseEvent.CLICK, determineColor);
+			SilverWeave.addEventListener(MouseEvent.CLICK, determineColor);
+			AntGoldWeave.addEventListener(MouseEvent.CLICK, determineColor);
+			ForestWeave.addEventListener(MouseEvent.CLICK, determineColor);
+			BronzeWeave.addEventListener(MouseEvent.CLICK, determineColor);
+			OrangeWeave.addEventListener(MouseEvent.CLICK, determineColor);
+			BabyBlueWeave.addEventListener(MouseEvent.CLICK, determineColor);
+			
+			
+			//clear button
+			resetButton.addEventListener(MouseEvent.CLICK, resetColors);
+			padView.addEventListener(MouseEvent.CLICK, changeViews);
+			blockerView.addEventListener(MouseEvent.CLICK, changeViews);
+			gloveView.addEventListener(MouseEvent.CLICK, changeViews);
+			allView.addEventListener(MouseEvent.CLICK, changeViews);
+			backButton.addEventListener(MouseEvent.CLICK, returnToMenu);
+			exportButton.addEventListener(MouseEvent.CLICK, save);
 		}
-		
-		
 		
 		function frame2():*
 		{
-			stage.showDefaultContextMenu = false;
-			this.ViewsPopout.visible = false;
+			this.stage.showDefaultContextMenu = true;
+			this.ViewsPopout.visible = true;
 			this.SpecPopout.visible = false;
 			this.MoreViews.buttonMode = true;	
 			this.colorOneBtnArray = [this.BlackJpro, this.WhiteJpro, this.RedJpro, this.BlueJpro, this.NavyJpro, this.SportGoldJpro, this.YellowJpro, this.SilverJpro, this.OrangeJpro, this.MaroonJpro, this.BronzeJpro, this.ForestJpro, this.AntGoldJpro, this.PurpleJpro, this.PurpleJpro, this.TealJpro, this.BrownJpro, this.BuckyJpro, this.RetroTanJpro, this.WhiteWeave, this.BlackWeave, this.RedWeave, this.BlueWeave, this.NavyWeave, this.SportGoldWeave, this.SilverWeave, this.AntGoldWeave, this.ForestWeave, this.BronzeWeave, this.OrangeWeave, this.BabyBlueWeave];
@@ -102,685 +149,634 @@ package
 			this.a = 0;
 			while (this.a < this.colorOptionsArray.length) 
 			{
-				this.colorOptionsArray[this.a].addEventListener(flash.events.TouchEvent.TOUCH_TAP, this.colorOptionsCLICK);
+				this.colorOptionsArray[this.a].addEventListener(flash.events.MouseEvent.CLICK, this.colorOptionsCLICK);
 				this.colorOptionsArray[this.a].buttonMode = true;
 				var loc1:*;
 				var loc2:*=((loc1 = this).a + 1);
 				loc1.a = loc2;
 			}
-
-			public function determineColor(arg1:flash.events.MouseEvent):*
+		}
+		
+		public function menuAppear(arg1:MouseEvent):void
+		{
+			if (arg1.target == ColorOneChooser) 
 			{
-				var loc3:*=null;
-				var loc1:*=arg1.currentTarget.name;
-				var loc2:*=new fl.motion.Color();
-				if (loc1 != "BlackJpro") 
-				{
-					if (loc1 != "WhiteJpro") 
-					{
-						if (loc1 != "BlueJpro") 
-						{
-							if (loc1 != "NavyJpro") 
-							{
-								if (loc1 != "RedJpro") 
-								{
-									if (loc1 != "SportGoldJpro") 
-									{
-										if (loc1 != "YellowJpro") 
-										{
-											if (loc1 != "SilverJpro") 
-											{
-												if (loc1 != "OrangeJpro") 
-												{
-													if (loc1 != "MaroonJpro") 
-													{
-														if (loc1 != "BronzeJpro") 
-														{
-															if (loc1 != "ForestJpro") 
-															{
-																if (loc1 != "AntGoldJpro") 
-																{
-																	if (loc1 != "PurpleJpro") 
-																	{
-																		if (loc1 != "TealJpro") 
-																		{
-																			if (loc1 != "BrownJpro") 
-																			{
-																				if (loc1 != "BuckyJpro") 
-																				{
-																					if (loc1 != "RetroTanJpro") 
-																					{
-																						if (loc1 != "WhiteWeave") 
-																						{
-																							if (loc1 != "BlackWeave") 
-																							{
-																								if (loc1 != "BlueWeave") 
-																								{
-																									if (loc1 != "NavyWeave") 
-																									{
-																										if (loc1 != "RedWeave") 
-																										{
-																											if (loc1 != "SportGoldWeave") 
-																											{
-																												if (loc1 != "SilverWeave") 
-																												{
-																													if (loc1 != "AntGoldWeave") 
-																													{
-																														if (loc1 != "ForestWeave") 
-																														{
-																															if (loc1 != "BronzeWeave") 
-																															{
-																																if (loc1 != "BabyBlueWeave") 
-																																{
-																																	if (loc1 == "OrangeWeave") 
-																																	{
-																																		loc2.setTint(16737792, 0.9);
-																																		loc3 = "ORANGE WEAVE";
-																																		flash.display.MovieClip(parent).Pads.ColorFour.ColorFourWeave.visible = true;
-																																		flash.display.MovieClip(parent).Pads.ColorFour.visible = true;
-																																		flash.display.MovieClip(parent).Glove.ColorFour.visible = true;
-																																		flash.display.MovieClip(parent).Glove.ColorFour.ColorFourWeave.visible = true;
-																																		flash.display.MovieClip(parent).Blocker.ColorFour.visible = true;
-																																		flash.display.MovieClip(parent).Blocker.ColorFour.ColorFourWeave.visible = true;
-																																		flash.display.MovieClip(parent).SpecSheetCover.Pads.ColorFour.ColorFourWeave.visible = true;
-																																		flash.display.MovieClip(parent).SpecSheetCover.Pads.ColorFour.visible = true;
-																																		flash.display.MovieClip(parent).SpecSheetCover.Glove.ColorFour.visible = true;
-																																		flash.display.MovieClip(parent).SpecSheetCover.Glove.ColorFour.ColorFourWeave.visible = true;
-																																		flash.display.MovieClip(parent).SpecSheetCover.Blocker.ColorFour.visible = true;
-																																		flash.display.MovieClip(parent).SpecSheetCover.Blocker.ColorFour.ColorFourWeave.visible = true;
-																																	}
-																																}
-																																else 
-																																{
-																																	loc2.setTint(4630523, 0.9);
-																																	loc3 = "BABY BLUE WEAVE";
-																																	flash.display.MovieClip(parent).Pads.ColorFour.ColorFourWeave.visible = true;
-																																	flash.display.MovieClip(parent).Pads.ColorFour.visible = true;
-																																	flash.display.MovieClip(parent).Glove.ColorFour.visible = true;
-																																	flash.display.MovieClip(parent).Glove.ColorFour.ColorFourWeave.visible = true;
-																																	flash.display.MovieClip(parent).Blocker.ColorFour.visible = true;
-																																	flash.display.MovieClip(parent).Blocker.ColorFour.ColorFourWeave.visible = true;
-																																	flash.display.MovieClip(parent).SpecSheetCover.Pads.ColorFour.ColorFourWeave.visible = true;
-																																	flash.display.MovieClip(parent).SpecSheetCover.Pads.ColorFour.visible = true;
-																																	flash.display.MovieClip(parent).SpecSheetCover.Glove.ColorFour.visible = true;
-																																	flash.display.MovieClip(parent).SpecSheetCover.Glove.ColorFour.ColorFourWeave.visible = true;
-																																	flash.display.MovieClip(parent).SpecSheetCover.Blocker.ColorFour.visible = true;
-																																	flash.display.MovieClip(parent).SpecSheetCover.Blocker.ColorFour.ColorFourWeave.visible = true;
-																																}
-																															}
-																															else 
-																															{
-																																loc2.setTint(12027213, 0.9);
-																																loc3 = "BRONZE WEAVE";
-																																flash.display.MovieClip(parent).Pads.ColorFour.ColorFourWeave.visible = true;
-																																flash.display.MovieClip(parent).Pads.ColorFour.visible = true;
-																																flash.display.MovieClip(parent).Glove.ColorFour.visible = true;
-																																flash.display.MovieClip(parent).Glove.ColorFour.ColorFourWeave.visible = true;
-																																flash.display.MovieClip(parent).Blocker.ColorFour.visible = true;
-																																flash.display.MovieClip(parent).Blocker.ColorFour.ColorFourWeave.visible = true;
-																																flash.display.MovieClip(parent).SpecSheetCover.Pads.ColorFour.ColorFourWeave.visible = true;
-																																flash.display.MovieClip(parent).SpecSheetCover.Pads.ColorFour.visible = true;
-																																flash.display.MovieClip(parent).SpecSheetCover.Glove.ColorFour.visible = true;
-																																flash.display.MovieClip(parent).SpecSheetCover.Glove.ColorFour.ColorFourWeave.visible = true;
-																																flash.display.MovieClip(parent).SpecSheetCover.Blocker.ColorFour.visible = true;
-																																flash.display.MovieClip(parent).SpecSheetCover.Blocker.ColorFour.ColorFourWeave.visible = true;
-																															}
-																														}
-																														else 
-																														{
-																															loc2.setTint(345396, 0.9);
-																															loc3 = "FOREST WEAVE";
-																															flash.display.MovieClip(parent).Pads.ColorFour.ColorFourWeave.visible = true;
-																															flash.display.MovieClip(parent).Pads.ColorFour.visible = true;
-																															flash.display.MovieClip(parent).Glove.ColorFour.visible = true;
-																															flash.display.MovieClip(parent).Glove.ColorFour.ColorFourWeave.visible = true;
-																															flash.display.MovieClip(parent).Blocker.ColorFour.visible = true;
-																															flash.display.MovieClip(parent).Blocker.ColorFour.ColorFourWeave.visible = true;
-																															flash.display.MovieClip(parent).SpecSheetCover.Pads.ColorFour.ColorFourWeave.visible = true;
-																															flash.display.MovieClip(parent).SpecSheetCover.Pads.ColorFour.visible = true;
-																															flash.display.MovieClip(parent).SpecSheetCover.Glove.ColorFour.visible = true;
-																															flash.display.MovieClip(parent).SpecSheetCover.Glove.ColorFour.ColorFourWeave.visible = true;
-																															flash.display.MovieClip(parent).SpecSheetCover.Blocker.ColorFour.visible = true;
-																															flash.display.MovieClip(parent).SpecSheetCover.Blocker.ColorFour.ColorFourWeave.visible = true;
-																														}
-																													}
-																													else 
-																													{
-																														loc2.setTint(12623970, 0.9);
-																														loc3 = "ANTIQUE GOLD WEAVE";
-																														flash.display.MovieClip(parent).Pads.ColorFour.ColorFourWeave.visible = true;
-																														flash.display.MovieClip(parent).Pads.ColorFour.visible = true;
-																														flash.display.MovieClip(parent).Glove.ColorFour.visible = true;
-																														flash.display.MovieClip(parent).Glove.ColorFour.ColorFourWeave.visible = true;
-																														flash.display.MovieClip(parent).Blocker.ColorFour.visible = true;
-																														flash.display.MovieClip(parent).Blocker.ColorFour.ColorFourWeave.visible = true;
-																														flash.display.MovieClip(parent).SpecSheetCover.Pads.ColorFour.ColorFourWeave.visible = true;
-																														flash.display.MovieClip(parent).SpecSheetCover.Pads.ColorFour.visible = true;
-																														flash.display.MovieClip(parent).SpecSheetCover.Glove.ColorFour.visible = true;
-																														flash.display.MovieClip(parent).SpecSheetCover.Glove.ColorFour.ColorFourWeave.visible = true;
-																														flash.display.MovieClip(parent).SpecSheetCover.Blocker.ColorFour.visible = true;
-																														flash.display.MovieClip(parent).SpecSheetCover.Blocker.ColorFour.ColorFourWeave.visible = true;
-																													}
-																												}
-																												else 
-																												{
-																													loc2.setTint(12895428, 0.9);
-																													loc3 = "SILVER WEAVE";
-																													flash.display.MovieClip(parent).Pads.ColorFour.ColorFourWeave.visible = true;
-																													flash.display.MovieClip(parent).Pads.ColorFour.visible = true;
-																													flash.display.MovieClip(parent).Glove.ColorFour.visible = true;
-																													flash.display.MovieClip(parent).Glove.ColorFour.ColorFourWeave.visible = true;
-																													flash.display.MovieClip(parent).Blocker.ColorFour.visible = true;
-																													flash.display.MovieClip(parent).Blocker.ColorFour.ColorFourWeave.visible = true;
-																													flash.display.MovieClip(parent).SpecSheetCover.Pads.ColorFour.ColorFourWeave.visible = true;
-																													flash.display.MovieClip(parent).SpecSheetCover.Pads.ColorFour.visible = true;
-																													flash.display.MovieClip(parent).SpecSheetCover.Glove.ColorFour.visible = true;
-																													flash.display.MovieClip(parent).SpecSheetCover.Glove.ColorFour.ColorFourWeave.visible = true;
-																													flash.display.MovieClip(parent).SpecSheetCover.Blocker.ColorFour.visible = true;
-																													flash.display.MovieClip(parent).SpecSheetCover.Blocker.ColorFour.ColorFourWeave.visible = true;
-																												}
-																											}
-																											else 
-																											{
-																												loc2.setTint(16763904, 0.9);
-																												loc3 = "SPORT GOLD WEAVE";
-																												flash.display.MovieClip(parent).Pads.ColorFour.ColorFourWeave.visible = true;
-																												flash.display.MovieClip(parent).Pads.ColorFour.visible = true;
-																												flash.display.MovieClip(parent).Glove.ColorFour.visible = true;
-																												flash.display.MovieClip(parent).Glove.ColorFour.ColorFourWeave.visible = true;
-																												flash.display.MovieClip(parent).Blocker.ColorFour.visible = true;
-																												flash.display.MovieClip(parent).Blocker.ColorFour.ColorFourWeave.visible = true;
-																												flash.display.MovieClip(parent).SpecSheetCover.Pads.ColorFour.ColorFourWeave.visible = true;
-																												flash.display.MovieClip(parent).SpecSheetCover.Pads.ColorFour.visible = true;
-																												flash.display.MovieClip(parent).SpecSheetCover.Glove.ColorFour.visible = true;
-																												flash.display.MovieClip(parent).SpecSheetCover.Glove.ColorFour.ColorFourWeave.visible = true;
-																												flash.display.MovieClip(parent).SpecSheetCover.Blocker.ColorFour.visible = true;
-																												flash.display.MovieClip(parent).SpecSheetCover.Blocker.ColorFour.ColorFourWeave.visible = true;
-																											}
-																										}
-																										else 
-																										{
-																											loc2.setTint(16711680, 0.9);
-																											loc3 = "RED WEAVE";
-																											flash.display.MovieClip(parent).Pads.ColorFour.ColorFourWeave.visible = true;
-																											flash.display.MovieClip(parent).Pads.ColorFour.visible = true;
-																											flash.display.MovieClip(parent).Glove.ColorFour.visible = true;
-																											flash.display.MovieClip(parent).Glove.ColorFour.ColorFourWeave.visible = true;
-																											flash.display.MovieClip(parent).Blocker.ColorFour.visible = true;
-																											flash.display.MovieClip(parent).Blocker.ColorFour.ColorFourWeave.visible = true;
-																											flash.display.MovieClip(parent).SpecSheetCover.Pads.ColorFour.ColorFourWeave.visible = true;
-																											flash.display.MovieClip(parent).SpecSheetCover.Pads.ColorFour.visible = true;
-																											flash.display.MovieClip(parent).SpecSheetCover.Glove.ColorFour.visible = true;
-																											flash.display.MovieClip(parent).SpecSheetCover.Glove.ColorFour.ColorFourWeave.visible = true;
-																											flash.display.MovieClip(parent).SpecSheetCover.Blocker.ColorFour.visible = true;
-																											flash.display.MovieClip(parent).SpecSheetCover.Blocker.ColorFour.ColorFourWeave.visible = true;
-																										}
-																									}
-																									else 
-																									{
-																										loc2.setTint(1330, 0.9);
-																										loc3 = "NAVY WEAVE";
-																										flash.display.MovieClip(parent).Pads.ColorFour.ColorFourWeave.visible = true;
-																										flash.display.MovieClip(parent).Pads.ColorFour.visible = true;
-																										flash.display.MovieClip(parent).Glove.ColorFour.visible = true;
-																										flash.display.MovieClip(parent).Glove.ColorFour.ColorFourWeave.visible = true;
-																										flash.display.MovieClip(parent).Blocker.ColorFour.visible = true;
-																										flash.display.MovieClip(parent).Blocker.ColorFour.ColorFourWeave.visible = true;
-																										flash.display.MovieClip(parent).SpecSheetCover.Pads.ColorFour.ColorFourWeave.visible = true;
-																										flash.display.MovieClip(parent).SpecSheetCover.Pads.ColorFour.visible = true;
-																										flash.display.MovieClip(parent).SpecSheetCover.Glove.ColorFour.visible = true;
-																										flash.display.MovieClip(parent).SpecSheetCover.Glove.ColorFour.ColorFourWeave.visible = true;
-																										flash.display.MovieClip(parent).SpecSheetCover.Blocker.ColorFour.visible = true;
-																										flash.display.MovieClip(parent).SpecSheetCover.Blocker.ColorFour.ColorFourWeave.visible = true;
-																									}
-																								}
-																								else 
-																								{
-																									loc2.setTint(1653888, 0.9);
-																									loc3 = "BLUE WEAVE";
-																									flash.display.MovieClip(parent).Pads.ColorFour.ColorFourWeave.visible = true;
-																									flash.display.MovieClip(parent).Pads.ColorFour.visible = true;
-																									flash.display.MovieClip(parent).Glove.ColorFour.visible = true;
-																									flash.display.MovieClip(parent).Glove.ColorFour.ColorFourWeave.visible = true;
-																									flash.display.MovieClip(parent).Blocker.ColorFour.visible = true;
-																									flash.display.MovieClip(parent).Blocker.ColorFour.ColorFourWeave.visible = true;
-																									flash.display.MovieClip(parent).SpecSheetCover.Pads.ColorFour.ColorFourWeave.visible = true;
-																									flash.display.MovieClip(parent).SpecSheetCover.Pads.ColorFour.visible = true;
-																									flash.display.MovieClip(parent).SpecSheetCover.Glove.ColorFour.visible = true;
-																									flash.display.MovieClip(parent).SpecSheetCover.Glove.ColorFour.ColorFourWeave.visible = true;
-																									flash.display.MovieClip(parent).SpecSheetCover.Blocker.ColorFour.visible = true;
-																									flash.display.MovieClip(parent).SpecSheetCover.Blocker.ColorFour.ColorFourWeave.visible = true;
-																								}
-																							}
-																							else 
-																							{
-																								loc2.setTint(0, 0.9);
-																								loc3 = "BLACK WEAVE";
-																								flash.display.MovieClip(parent).Pads.ColorFour.ColorFourWeave.visible = true;
-																								flash.display.MovieClip(parent).Pads.ColorFour.visible = true;
-																								flash.display.MovieClip(parent).Glove.ColorFour.visible = true;
-																								flash.display.MovieClip(parent).Glove.ColorFour.ColorFourWeave.visible = true;
-																								flash.display.MovieClip(parent).Blocker.ColorFour.visible = true;
-																								flash.display.MovieClip(parent).Blocker.ColorFour.ColorFourWeave.visible = true;
-																								flash.display.MovieClip(parent).SpecSheetCover.Pads.ColorFour.ColorFourWeave.visible = true;
-																								flash.display.MovieClip(parent).SpecSheetCover.Pads.ColorFour.visible = true;
-																								flash.display.MovieClip(parent).SpecSheetCover.Glove.ColorFour.visible = true;
-																								flash.display.MovieClip(parent).SpecSheetCover.Glove.ColorFour.ColorFourWeave.visible = true;
-																								flash.display.MovieClip(parent).SpecSheetCover.Blocker.ColorFour.visible = true;
-																								flash.display.MovieClip(parent).SpecSheetCover.Blocker.ColorFour.ColorFourWeave.visible = true;
-																							}
-																						}
-																						else 
-																						{
-																							loc2.setTint(16777215, 0.1);
-																							loc3 = "WHITE WEAVE";
-																							flash.display.MovieClip(parent).Pads.ColorFour.ColorFourWeave.visible = true;
-																							flash.display.MovieClip(parent).Pads.ColorFour.visible = true;
-																							flash.display.MovieClip(parent).Glove.ColorFour.visible = true;
-																							flash.display.MovieClip(parent).Glove.ColorFour.ColorFourWeave.visible = true;
-																							flash.display.MovieClip(parent).Blocker.ColorFour.visible = true;
-																							flash.display.MovieClip(parent).Blocker.ColorFour.ColorFourWeave.visible = true;
-																							flash.display.MovieClip(parent).SpecSheetCover.Pads.ColorFour.ColorFourWeave.visible = true;
-																							flash.display.MovieClip(parent).SpecSheetCover.Pads.ColorFour.visible = true;
-																							flash.display.MovieClip(parent).SpecSheetCover.Glove.ColorFour.visible = true;
-																							flash.display.MovieClip(parent).SpecSheetCover.Glove.ColorFour.ColorFourWeave.visible = true;
-																							flash.display.MovieClip(parent).SpecSheetCover.Blocker.ColorFour.visible = true;
-																							flash.display.MovieClip(parent).SpecSheetCover.Blocker.ColorFour.ColorFourWeave.visible = true;
-																							flash.display.MovieClip(parent).SpecSheetCover.Pads.ColorFour.ColorFourWeave.visible = true;
-																							flash.display.MovieClip(parent).SpecSheetCover.Pads.ColorFour.visible = true;
-																							flash.display.MovieClip(parent).SpecSheetCover.Glove.ColorFour.visible = true;
-																							flash.display.MovieClip(parent).SpecSheetCover.Glove.ColorFour.ColorFourWeave.visible = true;
-																							flash.display.MovieClip(parent).SpecSheetCover.Blocker.ColorFour.visible = true;
-																							flash.display.MovieClip(parent).SpecSheetCover.Blocker.ColorFour.ColorFourWeave.visible = true;
-																						}
-																					}
-																					else 
-																					{
-																						loc2.setTint(11039796, 0.9);
-																						loc3 = "RETRO TAN";
-																						flash.display.MovieClip(parent).Pads.ColorFour.ColorFourWeave.visible = false;
-																						flash.display.MovieClip(parent).Pads.ColorFour.visible = true;
-																						flash.display.MovieClip(parent).Glove.ColorFour.visible = true;
-																						flash.display.MovieClip(parent).Glove.ColorFour.ColorFourWeave.visible = false;
-																						flash.display.MovieClip(parent).Blocker.ColorFour.visible = true;
-																						flash.display.MovieClip(parent).Blocker.ColorFour.ColorFourWeave.visible = false;
-																						flash.display.MovieClip(parent).SpecSheetCover.Pads.ColorFour.ColorFourWeave.visible = false;
-																						flash.display.MovieClip(parent).SpecSheetCover.Pads.ColorFour.visible = true;
-																						flash.display.MovieClip(parent).SpecSheetCover.Glove.ColorFour.visible = true;
-																						flash.display.MovieClip(parent).SpecSheetCover.Glove.ColorFour.ColorFourWeave.visible = false;
-																						flash.display.MovieClip(parent).SpecSheetCover.Blocker.ColorFour.visible = true;
-																						flash.display.MovieClip(parent).SpecSheetCover.Blocker.ColorFour.ColorFourWeave.visible = false;
-																					}
-																				}
-																				else 
-																				{
-																					loc2.setTint(5653292, 0.9);
-																					loc3 = "BUCKY";
-																					flash.display.MovieClip(parent).Pads.ColorFour.ColorFourWeave.visible = false;
-																					flash.display.MovieClip(parent).Pads.ColorFour.visible = true;
-																					flash.display.MovieClip(parent).Glove.ColorFour.visible = true;
-																					flash.display.MovieClip(parent).Glove.ColorFour.ColorFourWeave.visible = false;
-																					flash.display.MovieClip(parent).Blocker.ColorFour.visible = true;
-																					flash.display.MovieClip(parent).Blocker.ColorFour.ColorFourWeave.visible = false;
-																					flash.display.MovieClip(parent).SpecSheetCover.Pads.ColorFour.ColorFourWeave.visible = false;
-																					flash.display.MovieClip(parent).SpecSheetCover.Pads.ColorFour.visible = true;
-																					flash.display.MovieClip(parent).SpecSheetCover.Glove.ColorFour.visible = true;
-																					flash.display.MovieClip(parent).SpecSheetCover.Glove.ColorFour.ColorFourWeave.visible = false;
-																					flash.display.MovieClip(parent).SpecSheetCover.Blocker.ColorFour.visible = true;
-																					flash.display.MovieClip(parent).SpecSheetCover.Blocker.ColorFour.ColorFourWeave.visible = false;
-																				}
-																			}
-																			else 
-																			{
-																				loc2.setTint(4138249, 0.9);
-																				loc3 = "BROWN";
-																				flash.display.MovieClip(parent).Pads.ColorFour.ColorFourWeave.visible = false;
-																				flash.display.MovieClip(parent).Pads.ColorFour.visible = true;
-																				flash.display.MovieClip(parent).Glove.ColorFour.visible = true;
-																				flash.display.MovieClip(parent).Glove.ColorFour.ColorFourWeave.visible = false;
-																				flash.display.MovieClip(parent).Blocker.ColorFour.visible = true;
-																				flash.display.MovieClip(parent).Blocker.ColorFour.ColorFourWeave.visible = false;
-																				flash.display.MovieClip(parent).SpecSheetCover.Pads.ColorFour.ColorFourWeave.visible = false;
-																				flash.display.MovieClip(parent).SpecSheetCover.Pads.ColorFour.visible = true;
-																				flash.display.MovieClip(parent).SpecSheetCover.Glove.ColorFour.visible = true;
-																				flash.display.MovieClip(parent).SpecSheetCover.Glove.ColorFour.ColorFourWeave.visible = false;
-																				flash.display.MovieClip(parent).SpecSheetCover.Blocker.ColorFour.visible = true;
-																				flash.display.MovieClip(parent).SpecSheetCover.Blocker.ColorFour.ColorFourWeave.visible = false;
-																			}
-																		}
-																		else 
-																		{
-																			loc2.setTint(2646388, 0.9);
-																			loc3 = "TEAL";
-																			flash.display.MovieClip(parent).Pads.ColorFour.ColorFourWeave.visible = false;
-																			flash.display.MovieClip(parent).Pads.ColorFour.visible = true;
-																			flash.display.MovieClip(parent).Glove.ColorFour.visible = true;
-																			flash.display.MovieClip(parent).Glove.ColorFour.ColorFourWeave.visible = false;
-																			flash.display.MovieClip(parent).Blocker.ColorFour.visible = true;
-																			flash.display.MovieClip(parent).Blocker.ColorFour.ColorFourWeave.visible = false;
-																			flash.display.MovieClip(parent).SpecSheetCover.Pads.ColorFour.ColorFourWeave.visible = false;
-																			flash.display.MovieClip(parent).SpecSheetCover.Pads.ColorFour.visible = true;
-																			flash.display.MovieClip(parent).SpecSheetCover.Glove.ColorFour.visible = true;
-																			flash.display.MovieClip(parent).SpecSheetCover.Glove.ColorFour.ColorFourWeave.visible = false;
-																			flash.display.MovieClip(parent).SpecSheetCover.Blocker.ColorFour.visible = true;
-																			flash.display.MovieClip(parent).SpecSheetCover.Blocker.ColorFour.ColorFourWeave.visible = false;
-																		}
-																	}
-																	else 
-																	{
-																		loc2.setTint(2688854, 0.9);
-																		loc3 = "PURPLE";
-																		flash.display.MovieClip(parent).Pads.ColorFour.ColorFourWeave.visible = false;
-																		flash.display.MovieClip(parent).Pads.ColorFour.visible = true;
-																		flash.display.MovieClip(parent).Glove.ColorFour.visible = true;
-																		flash.display.MovieClip(parent).Glove.ColorFour.ColorFourWeave.visible = false;
-																		flash.display.MovieClip(parent).Blocker.ColorFour.visible = true;
-																		flash.display.MovieClip(parent).Blocker.ColorFour.ColorFourWeave.visible = false;
-																		flash.display.MovieClip(parent).SpecSheetCover.Pads.ColorFour.ColorFourWeave.visible = false;
-																		flash.display.MovieClip(parent).SpecSheetCover.Pads.ColorFour.visible = true;
-																		flash.display.MovieClip(parent).SpecSheetCover.Glove.ColorFour.visible = true;
-																		flash.display.MovieClip(parent).SpecSheetCover.Glove.ColorFour.ColorFourWeave.visible = false;
-																		flash.display.MovieClip(parent).SpecSheetCover.Blocker.ColorFour.visible = true;
-																		flash.display.MovieClip(parent).SpecSheetCover.Blocker.ColorFour.ColorFourWeave.visible = false;
-																	}
-																}
-																else 
-																{
-																	loc2.setTint(12623970, 0.9);
-																	loc3 = "ANTIQUE GOLD";
-																	flash.display.MovieClip(parent).Pads.ColorFour.ColorFourWeave.visible = false;
-																	flash.display.MovieClip(parent).Pads.ColorFour.visible = true;
-																	flash.display.MovieClip(parent).Glove.ColorFour.visible = true;
-																	flash.display.MovieClip(parent).Glove.ColorFour.ColorFourWeave.visible = false;
-																	flash.display.MovieClip(parent).Blocker.ColorFour.visible = true;
-																	flash.display.MovieClip(parent).Blocker.ColorFour.ColorFourWeave.visible = false;
-																	flash.display.MovieClip(parent).SpecSheetCover.Pads.ColorFour.ColorFourWeave.visible = false;
-																	flash.display.MovieClip(parent).SpecSheetCover.Pads.ColorFour.visible = true;
-																	flash.display.MovieClip(parent).SpecSheetCover.Glove.ColorFour.visible = true;
-																	flash.display.MovieClip(parent).SpecSheetCover.Glove.ColorFour.ColorFourWeave.visible = false;
-																	flash.display.MovieClip(parent).SpecSheetCover.Blocker.ColorFour.visible = true;
-																	flash.display.MovieClip(parent).SpecSheetCover.Blocker.ColorFour.ColorFourWeave.visible = false;
-																}
-															}
-															else 
-															{
-																loc2.setTint(345396, 0.9);
-																loc3 = "FOREST";
-																flash.display.MovieClip(parent).Pads.ColorFour.ColorFourWeave.visible = false;
-																flash.display.MovieClip(parent).Pads.ColorFour.visible = true;
-																flash.display.MovieClip(parent).Glove.ColorFour.visible = true;
-																flash.display.MovieClip(parent).Glove.ColorFour.ColorFourWeave.visible = false;
-																flash.display.MovieClip(parent).Blocker.ColorFour.visible = true;
-																flash.display.MovieClip(parent).Blocker.ColorFour.ColorFourWeave.visible = false;
-																flash.display.MovieClip(parent).SpecSheetCover.Pads.ColorFour.ColorFourWeave.visible = false;
-																flash.display.MovieClip(parent).SpecSheetCover.Pads.ColorFour.visible = true;
-																flash.display.MovieClip(parent).SpecSheetCover.Glove.ColorFour.visible = true;
-																flash.display.MovieClip(parent).SpecSheetCover.Glove.ColorFour.ColorFourWeave.visible = false;
-																flash.display.MovieClip(parent).SpecSheetCover.Blocker.ColorFour.visible = true;
-																flash.display.MovieClip(parent).SpecSheetCover.Blocker.ColorFour.ColorFourWeave.visible = false;
-															}
-														}
-														else 
-														{
-															loc2.setTint(12027213, 0.9);
-															loc3 = "BRONZE";
-															flash.display.MovieClip(parent).Pads.ColorFour.ColorFourWeave.visible = false;
-															flash.display.MovieClip(parent).Pads.ColorFour.visible = true;
-															flash.display.MovieClip(parent).Glove.ColorFour.visible = true;
-															flash.display.MovieClip(parent).Glove.ColorFour.ColorFourWeave.visible = false;
-															flash.display.MovieClip(parent).Blocker.ColorFour.visible = true;
-															flash.display.MovieClip(parent).Blocker.ColorFour.ColorFourWeave.visible = false;
-															flash.display.MovieClip(parent).SpecSheetCover.Pads.ColorFour.ColorFourWeave.visible = false;
-															flash.display.MovieClip(parent).SpecSheetCover.Pads.ColorFour.visible = true;
-															flash.display.MovieClip(parent).SpecSheetCover.Glove.ColorFour.visible = true;
-															flash.display.MovieClip(parent).SpecSheetCover.Glove.ColorFour.ColorFourWeave.visible = false;
-															flash.display.MovieClip(parent).SpecSheetCover.Blocker.ColorFour.visible = true;
-															flash.display.MovieClip(parent).SpecSheetCover.Blocker.ColorFour.ColorFourWeave.visible = false;
-														}
-													}
-													else 
-													{
-														loc2.setTint(6684672, 0.9);
-														loc3 = "MAROON";
-														flash.display.MovieClip(parent).Pads.ColorFour.ColorFourWeave.visible = false;
-														flash.display.MovieClip(parent).Pads.ColorFour.visible = true;
-														flash.display.MovieClip(parent).Glove.ColorFour.visible = true;
-														flash.display.MovieClip(parent).Glove.ColorFour.ColorFourWeave.visible = false;
-														flash.display.MovieClip(parent).Blocker.ColorFour.visible = true;
-														flash.display.MovieClip(parent).Blocker.ColorFour.ColorFourWeave.visible = false;
-														flash.display.MovieClip(parent).SpecSheetCover.Pads.ColorFour.ColorFourWeave.visible = false;
-														flash.display.MovieClip(parent).SpecSheetCover.Pads.ColorFour.visible = true;
-														flash.display.MovieClip(parent).SpecSheetCover.Glove.ColorFour.visible = true;
-														flash.display.MovieClip(parent).SpecSheetCover.Glove.ColorFour.ColorFourWeave.visible = false;
-														flash.display.MovieClip(parent).SpecSheetCover.Blocker.ColorFour.visible = true;
-														flash.display.MovieClip(parent).SpecSheetCover.Blocker.ColorFour.ColorFourWeave.visible = false;
-													}
-												}
-												else 
-												{
-													loc2.setTint(16737792, 0.9);
-													loc3 = "ORANGE";
-													flash.display.MovieClip(parent).Pads.ColorFour.ColorFourWeave.visible = false;
-													flash.display.MovieClip(parent).Pads.ColorFour.visible = true;
-													flash.display.MovieClip(parent).Glove.ColorFour.visible = true;
-													flash.display.MovieClip(parent).Glove.ColorFour.ColorFourWeave.visible = false;
-													flash.display.MovieClip(parent).Blocker.ColorFour.visible = true;
-													flash.display.MovieClip(parent).Blocker.ColorFour.ColorFourWeave.visible = false;
-													flash.display.MovieClip(parent).SpecSheetCover.Pads.ColorFour.ColorFourWeave.visible = false;
-													flash.display.MovieClip(parent).SpecSheetCover.Pads.ColorFour.visible = true;
-													flash.display.MovieClip(parent).SpecSheetCover.Glove.ColorFour.visible = true;
-													flash.display.MovieClip(parent).SpecSheetCover.Glove.ColorFour.ColorFourWeave.visible = false;
-													flash.display.MovieClip(parent).SpecSheetCover.Blocker.ColorFour.visible = true;
-													flash.display.MovieClip(parent).SpecSheetCover.Blocker.ColorFour.ColorFourWeave.visible = false;
-												}
-											}
-											else 
-											{
-												loc2.setTint(12895428, 0.9);
-												loc3 = "SILVER";
-												flash.display.MovieClip(parent).Pads.ColorFour.ColorFourWeave.visible = false;
-												flash.display.MovieClip(parent).Pads.ColorFour.visible = true;
-												flash.display.MovieClip(parent).Glove.ColorFour.visible = true;
-												flash.display.MovieClip(parent).Glove.ColorFour.ColorFourWeave.visible = false;
-												flash.display.MovieClip(parent).Blocker.ColorFour.visible = true;
-												flash.display.MovieClip(parent).Blocker.ColorFour.ColorFourWeave.visible = false;
-												flash.display.MovieClip(parent).SpecSheetCover.Pads.ColorFour.ColorFourWeave.visible = false;
-												flash.display.MovieClip(parent).SpecSheetCover.Pads.ColorFour.visible = true;
-												flash.display.MovieClip(parent).SpecSheetCover.Glove.ColorFour.visible = true;
-												flash.display.MovieClip(parent).SpecSheetCover.Glove.ColorFour.ColorFourWeave.visible = false;
-												flash.display.MovieClip(parent).SpecSheetCover.Blocker.ColorFour.visible = true;
-												flash.display.MovieClip(parent).SpecSheetCover.Blocker.ColorFour.ColorFourWeave.visible = false;
-											}
-										}
-										else 
-										{
-											loc2.setTint(16777011, 0.9);
-											loc3 = "YELLOW";
-											flash.display.MovieClip(parent).Pads.ColorFour.ColorFourWeave.visible = false;
-											flash.display.MovieClip(parent).Pads.ColorFour.visible = true;
-											flash.display.MovieClip(parent).Glove.ColorFour.visible = true;
-											flash.display.MovieClip(parent).Glove.ColorFour.ColorFourWeave.visible = false;
-											flash.display.MovieClip(parent).Blocker.ColorFour.visible = true;
-											flash.display.MovieClip(parent).Blocker.ColorFour.ColorFourWeave.visible = false;
-											flash.display.MovieClip(parent).SpecSheetCover.Pads.ColorFour.ColorFourWeave.visible = false;
-											flash.display.MovieClip(parent).SpecSheetCover.Pads.ColorFour.visible = true;
-											flash.display.MovieClip(parent).SpecSheetCover.Glove.ColorFour.visible = true;
-											flash.display.MovieClip(parent).SpecSheetCover.Glove.ColorFour.ColorFourWeave.visible = false;
-											flash.display.MovieClip(parent).SpecSheetCover.Blocker.ColorFour.visible = true;
-											flash.display.MovieClip(parent).SpecSheetCover.Blocker.ColorFour.ColorFourWeave.visible = false;
-										}
-									}
-									else 
-									{
-										loc2.setTint(16763904, 0.9);
-										loc3 = "SPORT GOLD";
-										flash.display.MovieClip(parent).Pads.ColorFour.ColorFourWeave.visible = false;
-										flash.display.MovieClip(parent).Pads.ColorFour.visible = true;
-										flash.display.MovieClip(parent).Glove.ColorFour.visible = true;
-										flash.display.MovieClip(parent).Glove.ColorFour.ColorFourWeave.visible = false;
-										flash.display.MovieClip(parent).Blocker.ColorFour.visible = true;
-										flash.display.MovieClip(parent).Blocker.ColorFour.ColorFourWeave.visible = false;
-										flash.display.MovieClip(parent).SpecSheetCover.Pads.ColorFour.ColorFourWeave.visible = false;
-										flash.display.MovieClip(parent).SpecSheetCover.Pads.ColorFour.visible = true;
-										flash.display.MovieClip(parent).SpecSheetCover.Glove.ColorFour.visible = true;
-										flash.display.MovieClip(parent).SpecSheetCover.Glove.ColorFour.ColorFourWeave.visible = false;
-										flash.display.MovieClip(parent).SpecSheetCover.Blocker.ColorFour.visible = true;
-										flash.display.MovieClip(parent).SpecSheetCover.Blocker.ColorFour.ColorFourWeave.visible = false;
-									}
-								}
-								else 
-								{
-									loc2.setTint(16711680, 0.9);
-									loc3 = "RED";
-									flash.display.MovieClip(parent).Pads.ColorFour.ColorFourWeave.visible = false;
-									flash.display.MovieClip(parent).Pads.ColorFour.visible = true;
-									flash.display.MovieClip(parent).Glove.ColorFour.visible = true;
-									flash.display.MovieClip(parent).Glove.ColorFour.ColorFourWeave.visible = false;
-									flash.display.MovieClip(parent).Blocker.ColorFour.visible = true;
-									flash.display.MovieClip(parent).Blocker.ColorFour.ColorFourWeave.visible = false;
-									flash.display.MovieClip(parent).SpecSheetCover.Pads.ColorFour.ColorFourWeave.visible = false;
-									flash.display.MovieClip(parent).SpecSheetCover.Pads.ColorFour.visible = true;
-									flash.display.MovieClip(parent).SpecSheetCover.Glove.ColorFour.visible = true;
-									flash.display.MovieClip(parent).SpecSheetCover.Glove.ColorFour.ColorFourWeave.visible = false;
-									flash.display.MovieClip(parent).SpecSheetCover.Blocker.ColorFour.visible = true;
-									flash.display.MovieClip(parent).SpecSheetCover.Blocker.ColorFour.ColorFourWeave.visible = false;
-								}
-							}
-							else 
-							{
-								loc2.setTint(51, 0.9);
-								loc3 = "NAVY";
-								flash.display.MovieClip(parent).Pads.ColorFour.ColorFourWeave.visible = false;
-								flash.display.MovieClip(parent).Pads.ColorFour.visible = true;
-								flash.display.MovieClip(parent).Glove.ColorFour.visible = true;
-								flash.display.MovieClip(parent).Glove.ColorFour.ColorFourWeave.visible = false;
-								flash.display.MovieClip(parent).Blocker.ColorFour.visible = true;
-								flash.display.MovieClip(parent).Blocker.ColorFour.ColorFourWeave.visible = false;
-								flash.display.MovieClip(parent).SpecSheetCover.Pads.ColorFour.ColorFourWeave.visible = false;
-								flash.display.MovieClip(parent).SpecSheetCover.Pads.ColorFour.visible = true;
-								flash.display.MovieClip(parent).SpecSheetCover.Glove.ColorFour.visible = true;
-								flash.display.MovieClip(parent).SpecSheetCover.Glove.ColorFour.ColorFourWeave.visible = false;
-								flash.display.MovieClip(parent).SpecSheetCover.Blocker.ColorFour.visible = true;
-								flash.display.MovieClip(parent).SpecSheetCover.Blocker.ColorFour.ColorFourWeave.visible = false;
-							}
-						}
-						else 
-						{
-							loc2.setTint(1653888, 0.9);
-							loc3 = "BLUE";
-							flash.display.MovieClip(parent).Pads.ColorFour.ColorFourWeave.visible = false;
-							flash.display.MovieClip(parent).Pads.ColorFour.visible = true;
-							flash.display.MovieClip(parent).Glove.ColorFour.visible = true;
-							flash.display.MovieClip(parent).Glove.ColorFour.ColorFourWeave.visible = false;
-							flash.display.MovieClip(parent).Blocker.ColorFour.visible = true;
-							flash.display.MovieClip(parent).Blocker.ColorFour.ColorFourWeave.visible = false;
-							flash.display.MovieClip(parent).SpecSheetCover.Pads.ColorFour.ColorFourWeave.visible = false;
-							flash.display.MovieClip(parent).SpecSheetCover.Pads.ColorFour.visible = true;
-							flash.display.MovieClip(parent).SpecSheetCover.Glove.ColorFour.visible = true;
-							flash.display.MovieClip(parent).SpecSheetCover.Glove.ColorFour.ColorFourWeave.visible = false;
-							flash.display.MovieClip(parent).SpecSheetCover.Blocker.ColorFour.visible = true;
-							flash.display.MovieClip(parent).SpecSheetCover.Blocker.ColorFour.ColorFourWeave.visible = false;
-						}
-					}
-					else 
-					{
-						loc2.setTint(16777215, 0.1);
-						loc3 = "WHITE";
-						flash.display.MovieClip(parent).Pads.ColorFour.ColorFourWeave.visible = false;
-						flash.display.MovieClip(parent).Pads.ColorFour.visible = true;
-						flash.display.MovieClip(parent).Glove.ColorFour.visible = true;
-						flash.display.MovieClip(parent).Glove.ColorFour.ColorFourWeave.visible = false;
-						flash.display.MovieClip(parent).Blocker.ColorFour.visible = true;
-						flash.display.MovieClip(parent).Blocker.ColorFour.ColorFourWeave.visible = false;
-						flash.display.MovieClip(parent).SpecSheetCover.Pads.ColorFour.ColorFourWeave.visible = false;
-						flash.display.MovieClip(parent).SpecSheetCover.Pads.ColorFour.visible = true;
-						flash.display.MovieClip(parent).SpecSheetCover.Glove.ColorFour.visible = true;
-						flash.display.MovieClip(parent).SpecSheetCover.Glove.ColorFour.ColorFourWeave.visible = false;
-						flash.display.MovieClip(parent).SpecSheetCover.Blocker.ColorFour.visible = true;
-						flash.display.MovieClip(parent).SpecSheetCover.Blocker.ColorFour.ColorFourWeave.visible = false;
-					}
+				menu1.visible = true;
+				menu1.x = 31.8;
+				menu1.y = 95;
+				menu1.text.text = "Side Leg Panel";
+			}
+			if (arg1.target == ColorTwoChooser) 
+			{
+				menu1.visible = true;
+				menu1.x = 68;
+				menu1.y = 95;
+				menu1.text.text = "Base 1";		
+			}
+			if (arg1.target == ColorThreeChooser) 
+			{
+				menu1.visible = true;
+				menu1.x = 155;
+				menu1.y = 95;
+				menu1.text.text = "Base 2";
+			}
+			if (arg1.target == ColorFourChooser) 
+			{
+				menu1.visible = true;
+				menu1.x = 31.8;
+				menu1.y = 195;
+				menu1.text.text = "Outer Leg Roll";	
+			}
+			if (arg1.target == ColorFiveChooser) 
+			{
+				menu1.visible = true;
+				menu1.x = 68;
+				menu1.y = 195;
+				menu1.text.text = "Top Graphic";
+			}
+			if (arg1.target == ColorSixChooser) 
+			{
+				menu1.visible = true;
+				menu1.x = 155;
+				menu1.y = 195;
+				menu1.text.text = "Middle Graphic";
+			}
+			if (arg1.target == ColorSevenChooser) 
+			{
+				menu1.visible = true;
+				menu1.x = 31.8;
+				menu1.y = 295;
+				menu1.text.text = "Lower Graphic";	
+			}
+			if (arg1.target == ColorEightChooser) 
+			{
+				menu1.visible = true;
+				menu1.x = 68;
+				menu1.y = 295;
+				menu1.text.text = "Lower Graphic Outline";
+			}
+			if (arg1.target == ColorNineChooser) 
+			{
+				menu1.visible = true;
+				menu1.x = 155;
+				menu1.y = 295;
+				menu1.text.text = "Lacing";
+			}
+			if (arg1.target == ColorTenChooser) 
+			{
+				menu1.visible = true;
+				menu1.x = 31.8;
+				menu1.y = 395;
+				menu1.text.text = "Outlining";	
+			}
+			if (arg1.target == ColorElevenChooser) 
+			{
+				menu1.visible = true;
+				menu1.x = 68;
+				menu1.y = 395;
+				menu1.text.text = "Logo 1";
+			}
+			if (arg1.target == ColorTwelveChooser) 
+			{
+				menu1.visible = true;
+				menu1.x = 155;
+				menu1.y = 395;
+				menu1.text.text = "Logo 2";
+			}
+			if (arg1.target == ColorThirteenChooser) 
+			{
+				menu1.visible = true;
+				menu1.x = 31.8;
+				menu1.y = 495;
+				menu1.text.text = "Logo 3";	
+			}
+			if (arg1.target == ColorFourteenChooser) 
+			{
+				menu1.visible = true;
+				menu1.x = 68;
+				menu1.y = 495;
+				menu1.text.text = "Subz Logo Front";
+			}
+		}
+		
+		public function menuDisappear(arg1:MouseEvent):void
+		{
+			menu1.visible = false;
+		}
+		
+		public function changeViews(arg1:MouseEvent):void
+		{
+			if (arg1.currentTarget == padView)
+			{
+				blocker.x = 1200;
+				Pads.x = 393.25;
+				Pads.y = 13.35;
+				glove.x = 1200;
+				blocker.scaleX = 1;
+				blocker.scaleY = 1;
+				Pads.scaleX = 1;
+				Pads.scaleY = 1;
+				glove.scaleX = 1;
+				glove.scaleY = 1;
+			}
+			if (arg1.currentTarget == blockerView)
+			{
+				blocker.x = 430;
+				Pads.x = 1200;
+				glove.x = 1200;
+				blocker.scaleX = 1;
+				blocker.scaleY = 1;
+				Pads.scaleX = 1;
+				Pads.scaleY = 1;
+				glove.scaleX = 1;
+				glove.scaleY = 1;
+			}
+			if (arg1.currentTarget == gloveView)
+			{
+				blocker.x = 1200;
+				Pads.x = 1200;
+				glove.x = 400;
+				glove.y = 43.45
+				blocker.scaleX = 1;
+				blocker.scaleY = 1;
+				Pads.scaleX = 1;
+				Pads.scaleY = 1;
+				glove.scaleX = 1;
+				glove.scaleY = 1;
+			}
+			if (arg1.currentTarget == allView)
+			{
+				Pads.x = 580;
+				Pads.y = 72;
+				blocker.x = 375;
+				blocker.y = 33;
+				glove.x = 337;
+				glove.y = 250;
+				Pads.scaleX = .75;
+				Pads.scaleY = .75;
+				blocker.scaleX = .32;
+				blocker.scaleY = .32;
+				glove.scaleX = .35;
+				glove.scaleY = .35;
+				
+			}
+		}
+		
+		public function colorHandler(arg1:MouseEvent):void
+		{
+			var tintColor: *= new Color();
+			tintColor.setTint(4630523, 0.1);    
+			
+			if (arg1.target == ColorOneChooser) 
+			{
+				Pads.getChildAt(4).transform.colorTransform = tintColor;
+				currentSelectedPad = Pads.getChildAt(4);
+				blocker.getChildAt(13).transform.colorTransform = tintColor;
+				currentSelectedBlocker = blocker.getChildAt(13);
+				glove.getChildAt(12).transform.colorTransform = tintColor;
+				currentSelectedGlove = glove.getChildAt(12);
+			}
+				
+			if (arg1.target == ColorTwoChooser) 
+			{
+				Pads.getChildAt(3).transform.colorTransform = tintColor;
+				currentSelectedPad = Pads.getChildAt(3);
+				blocker.getChildAt(1).transform.colorTransform = tintColor;
+				currentSelectedBlocker = blocker.getChildAt(1);
+				glove.getChildAt(4).transform.colorTransform = tintColor;
+				currentSelectedGlove = glove.getChildAt(4);
+			}
+			if (arg1.target == ColorThreeChooser) 
+			{
+				Pads.getChildAt(9).transform.colorTransform = tintColor;
+				currentSelectedPad = Pads.getChildAt(9);
+				blocker.getChildAt(6).transform.colorTransform = tintColor;
+				currentSelectedBlocker = blocker.getChildAt(6);
+				glove.getChildAt(3).transform.colorTransform = tintColor;
+				currentSelectedGlove = glove.getChildAt(3);
+			}
+			if (arg1.target == ColorFourChooser) 
+			{
+				Pads.getChildAt(12).transform.colorTransform = tintColor;
+				currentSelectedPad = Pads.getChildAt(12);
+				blocker.getChildAt(13).transform.colorTransform = tintColor;
+				currentSelectedBlocker = blocker.getChildAt(13);
+				glove.getChildAt(6).transform.colorTransform = tintColor;
+				currentSelectedGlove = glove.getChildAt(6);
+				//outerlegroll
+			}
+			if (arg1.target == ColorFiveChooser) 
+			{
+				Pads.getChildAt(10).transform.colorTransform = tintColor;
+				currentSelectedPad = Pads.getChildAt(10);
+				blocker.getChildAt(7).transform.colorTransform = tintColor;
+				currentSelectedBlocker = blocker.getChildAt(7);
+				glove.getChildAt(11).transform.colorTransform = tintColor;
+				currentSelectedGlove = glove.getChildAt(11);
+				//graphictop
+			}
+			if (arg1.target == ColorSixChooser) 
+			{
+				Pads.getChildAt(8).transform.colorTransform = tintColor;
+				currentSelectedPad = Pads.getChildAt(8);
+				blocker.getChildAt(5).transform.colorTransform = tintColor;
+				currentSelectedBlocker = blocker.getChildAt(5);
+				glove.getChildAt(5).transform.colorTransform = tintColor;
+				currentSelectedGlove = glove.getChildAt(5);
+				//middlegraphic	
+			}
+			if (arg1.target == ColorSevenChooser) 
+			{
+				Pads.getChildAt(11).transform.colorTransform = tintColor;
+				currentSelectedPad = Pads.getChildAt(11);
+				blocker.getChildAt(4).transform.colorTransform = tintColor;
+				currentSelectedBlocker = blocker.getChildAt(4);
+				glove.getChildAt(2).transform.colorTransform = tintColor;
+				currentSelectedGlove = glove.getChildAt(2);
+				//lowergrpahic
+			}
+			if (arg1.target == ColorEightChooser) 
+			{
+				Pads.getChildAt(7).transform.colorTransform = tintColor;
+				currentSelectedPad = Pads.getChildAt(7);
+				blocker.getChildAt(3).transform.colorTransform = tintColor;
+				currentSelectedBlocker = blocker.getChildAt(3);
+				glove.getChildAt(1).transform.colorTransform = tintColor;
+				currentSelectedGlove = glove.getChildAt(1);
+				//lowergraphicoutline
+			}
+			if (arg1.target == ColorNineChooser) 
+			{
+				Pads.getChildAt(24).transform.colorTransform = tintColor;
+				currentSelectedPad = Pads.getChildAt(24);
+				blocker.getChildAt(12).transform.colorTransform = tintColor;
+				currentSelectedBlocker = blocker.getChildAt(12);
+				glove.getChildAt(16).transform.colorTransform = tintColor;
+				currentSelectedGlove = glove.getChildAt(16);
+				//lacing
+			}
+			if (arg1.target == ColorTenChooser) 
+			{
+				Pads.getChildAt(5).transform.colorTransform = tintColor;
+				currentSelectedPad = Pads.getChildAt(5);
+				blocker.getChildAt(11).transform.colorTransform = tintColor;
+				currentSelectedBlocker = blocker.getChildAt(11);
+				glove.getChildAt(10).transform.colorTransform = tintColor;
+				currentSelectedGlove = glove.getChildAt(10);
+				//outlining
+			}
+			if (arg1.target ==  ColorElevenChooser) 
+			{
+				Pads.getChildAt(13).transform.colorTransform = tintColor;
+				currentSelectedPad = Pads.getChildAt(13);
+				blocker.getChildAt(8).transform.colorTransform = tintColor;
+				currentSelectedBlocker = blocker.getChildAt(8);
+				glove.getChildAt(7).transform.colorTransform = tintColor;
+				currentSelectedGlove = glove.getChildAt(7);
+				//logo1
+			}
+			if (arg1.target == ColorTwelveChooser) 
+			{
+				Pads.getChildAt(14).transform.colorTransform = tintColor;
+				currentSelectedPad = Pads.getChildAt(14);
+				blocker.getChildAt(9).transform.colorTransform = tintColor;
+				currentSelectedBlocker = blocker.getChildAt(9);
+				glove.getChildAt(9).transform.colorTransform = tintColor;
+				currentSelectedGlove= glove.getChildAt(9);
+				//logo2
+			}
+			if (arg1.target == ColorThirteenChooser) 
+			{
+				Pads.getChildAt(15).transform.colorTransform = tintColor;
+				currentSelectedPad = Pads.getChildAt(15);
+				blocker.getChildAt(10).transform.colorTransform = tintColor;
+				currentSelectedBlocker = blocker.getChildAt(10);
+				glove.getChildAt(8).transform.colorTransform = tintColor;
+				currentSelectedGlove = glove.getChildAt(8);
+				//logo3
+			}
+			if (arg1.target == ColorFourteenChooser) 
+			{
+				Pads.getChildAt(26).transform.colorTransform = tintColor;
+				currentSelectedPad = Pads.getChildAt(26);
+				blocker.getChildAt(14).transform.colorTransform = tintColor;
+				currentSelectedBlocker = blocker.getChildAt(14);
+				glove.getChildAt(13).transform.colorTransform = tintColor;
+				currentSelectedGlove = glove.getChildAt(13);
+				//subzlogo
+			}
+	}
+		
+		public function resetColors(arg1:flash.events.MouseEvent):void
+		{	
+			var tintColor: *= new Color();
+			tintColor.setTint(16777215, 0.1);
+			
+			if (arg1.currentTarget == resetButton) 
+			{
+				Pads.getChildAt(4).transform.colorTransform = tintColor;
+				Pads.getChildAt(3).transform.colorTransform = tintColor;
+				Pads.getChildAt(9).transform.colorTransform = tintColor;
+				Pads.getChildAt(12).transform.colorTransform = tintColor;
+				Pads.getChildAt(10).transform.colorTransform = tintColor;
+				Pads.getChildAt(8).transform.colorTransform = tintColor;
+				Pads.getChildAt(11).transform.colorTransform = tintColor;
+				Pads.getChildAt(7).transform.colorTransform = tintColor;
+				Pads.getChildAt(24).transform.colorTransform = tintColor;
+				Pads.getChildAt(5).transform.colorTransform = tintColor;
+				Pads.getChildAt(13).transform.colorTransform = tintColor;
+				Pads.getChildAt(14).transform.colorTransform = tintColor;
+				Pads.getChildAt(15).transform.colorTransform = tintColor;
+				Pads.getChildAt(26).transform.colorTransform = tintColor;
+				blocker.getChildAt(1).transform.colorTransform = tintColor;
+				blocker.getChildAt(2).transform.colorTransform = tintColor;
+				blocker.getChildAt(3).transform.colorTransform = tintColor;
+				blocker.getChildAt(4).transform.colorTransform = tintColor;
+				blocker.getChildAt(5).transform.colorTransform = tintColor;
+				blocker.getChildAt(6).transform.colorTransform = tintColor;
+				blocker.getChildAt(7).transform.colorTransform = tintColor;
+				blocker.getChildAt(8).transform.colorTransform = tintColor;
+				blocker.getChildAt(9).transform.colorTransform = tintColor;
+				blocker.getChildAt(10).transform.colorTransform = tintColor;
+				blocker.getChildAt(11).transform.colorTransform = tintColor;
+				blocker.getChildAt(12).transform.colorTransform = tintColor;
+				blocker.getChildAt(13).transform.colorTransform = tintColor;
+				blocker.getChildAt(14).transform.colorTransform = tintColor;
+				blocker.getChildAt(15).transform.colorTransform = tintColor;
+				blocker.getChildAt(16).transform.colorTransform = tintColor;
+				glove.getChildAt(1).transform.colorTransform = tintColor;
+				glove.getChildAt(2).transform.colorTransform = tintColor;
+				glove.getChildAt(3).transform.colorTransform = tintColor;
+				glove.getChildAt(4).transform.colorTransform = tintColor;
+				glove.getChildAt(5).transform.colorTransform = tintColor;
+				glove.getChildAt(6).transform.colorTransform = tintColor;
+				glove.getChildAt(7).transform.colorTransform = tintColor;
+				glove.getChildAt(8).transform.colorTransform = tintColor;
+				glove.getChildAt(9).transform.colorTransform = tintColor;
+				glove.getChildAt(10).transform.colorTransform = tintColor;
+				glove.getChildAt(11).transform.colorTransform = tintColor;
+				glove.getChildAt(12).transform.colorTransform = tintColor;
+				glove.getChildAt(13).transform.colorTransform = tintColor;
+				glove.getChildAt(14).transform.colorTransform = tintColor;
+				glove.getChildAt(15).transform.colorTransform = tintColor;
+				glove.getChildAt(16).transform.colorTransform = tintColor;	
+			}
+		}
+		
+		public function save(arg1:flash.events.MouseEvent):void
+		{	
+			if (arg1.currentTarget == exportButton)
+			{
+				takeScreenshot();
+			}
+		}
+		
+		public function returnToMenu(arg1:flash.events.MouseEvent):void
+		{	
+		}	
+		
+		public function determineColor(arg1:flash.events.MouseEvent):*
+			{
+				var loc1:*= arg1.currentTarget;
+				var loc2: *= currentSelectedPad;
+				var tintColor: *= new Color();
+				
+				if (loc1 == BlackJpro) 
+				{	
+					tintColor.setTint(0, 0.9);
+					currentSelectedPad.transform.colorTransform = tintColor;
+					currentSelectedBlocker.transform.colorTransform = tintColor;
+					currentSelectedGlove.transform.colorTransform = tintColor;
 				}
-				else 
+				if (loc1 == WhiteJpro) 
 				{
-					loc2.setTint(0, 0.9);
-					loc3 = "BLACK";
-					flash.display.MovieClip(parent).Pads.ColorFour.ColorFourWeave.visible = false;
-					flash.display.MovieClip(parent).Pads.ColorFour.visible = true;
-					flash.display.MovieClip(parent).Glove.ColorFour.visible = true;
-					flash.display.MovieClip(parent).Glove.ColorFour.ColorFourWeave.visible = false;
-					flash.display.MovieClip(parent).Blocker.ColorFour.visible = true;
-					flash.display.MovieClip(parent).Blocker.ColorFour.ColorFourWeave.visible = false;
-					flash.display.MovieClip(parent).SpecSheetCover.Pads.ColorFour.ColorFourWeave.visible = false;
-					flash.display.MovieClip(parent).SpecSheetCover.Pads.ColorFour.visible = true;
-					flash.display.MovieClip(parent).SpecSheetCover.Glove.ColorFour.visible = true;
-					flash.display.MovieClip(parent).SpecSheetCover.Glove.ColorFour.ColorFourWeave.visible = false;
-					flash.display.MovieClip(parent).SpecSheetCover.Blocker.ColorFour.visible = true;
-					flash.display.MovieClip(parent).SpecSheetCover.Blocker.ColorFour.ColorFourWeave.visible = false;
-					flash.display.MovieClip(parent).SpecSheetCover.Pads.ColorFour.ColorFourWeave.visible = false;
-					flash.display.MovieClip(parent).SpecSheetCover.Pads.ColorFour.visible = true;
-					flash.display.MovieClip(parent).SpecSheetCover.Glove.ColorFour.visible = true;
-					flash.display.MovieClip(parent).SpecSheetCover.Glove.ColorFour.ColorFourWeave.visible = false;
-					flash.display.MovieClip(parent).SpecSheetCover.Blocker.ColorFour.visible = true;
-					flash.display.MovieClip(parent).SpecSheetCover.Blocker.ColorFour.ColorFourWeave.visible = false;
+					tintColor.setTint(16777215, 0.1)
+					currentSelectedPad.transform.colorTransform = tintColor;
+					currentSelectedBlocker.transform.colorTransform = tintColor;
+					currentSelectedGlove.transform.colorTransform = tintColor;
 				}
-				flash.display.MovieClip(parent).Pads.ColorFour.Graphic.transform.colorTransform = loc2;
-				flash.display.MovieClip(parent).Glove.ColorFour.Graphic.transform.colorTransform = loc2;
-				flash.display.MovieClip(parent).Blocker.ColorFour.Graphic.transform.colorTransform = loc2;
-				flash.display.MovieClip(parent).ColorElevenChooser.Swatch.ColorSwatch.transform.colorTransform = loc2;
-				this.selectedColor.text = String(loc3);
-				flash.display.MovieClip(parent).SpecSheetCover.FourthOutput.text = String(loc3);
-				flash.display.MovieClip(parent).SpecSheetCover.Pads.ColorFour.Graphic.transform.colorTransform = loc2;
-				flash.display.MovieClip(parent).SpecSheetCover.Glove.ColorFour.Graphic.transform.colorTransform = loc2;
-				flash.display.MovieClip(parent).SpecSheetCover.Blocker.ColorFour.Graphic.transform.colorTransform = loc2;
-				return;
-			}
+				if (loc1 == BlueJpro) 
+				{
+					tintColor.setTint(1653888, 0.9);
+					currentSelectedPad.transform.colorTransform = tintColor;
+					currentSelectedBlocker.transform.colorTransform = tintColor;
+					currentSelectedGlove.transform.colorTransform = tintColor;
+				}
+				if (loc1 == RedJpro) 
+				{
+					tintColor.setTint(16711680, 0.9);
+					currentSelectedPad.transform.colorTransform = tintColor;
+					currentSelectedBlocker.transform.colorTransform = tintColor;
+					currentSelectedGlove.transform.colorTransform = tintColor;
+				}
+				if (loc1 == NavyJpro) 
+				{
+					tintColor.setTint(51, 0.9);
+					currentSelectedPad.transform.colorTransform = tintColor;
+					currentSelectedBlocker.transform.colorTransform = tintColor;
+					currentSelectedGlove.transform.colorTransform = tintColor;
+				}
+				if (loc1 == SportGoldJpro) 
+				{
+					tintColor.setTint(16763904, 0.9);
+					currentSelectedPad.transform.colorTransform = tintColor;
+					currentSelectedBlocker.transform.colorTransform = tintColor;
+					currentSelectedGlove.transform.colorTransform = tintColor;
+				}
+				if (loc1 == YellowJpro) 
+				{
+					tintColor.setTint(16777011, 0.9);
+					currentSelectedPad.transform.colorTransform = tintColor;
+					currentSelectedBlocker.transform.colorTransform = tintColor;
+					currentSelectedGlove.transform.colorTransform = tintColor;
+				}
+				if (loc1 == SilverJpro) 
+				{
+					tintColor.setTint(12895428, 0.9);
+					currentSelectedPad.transform.colorTransform = tintColor;
+					currentSelectedBlocker.transform.colorTransform = tintColor;
+					currentSelectedGlove.transform.colorTransform = tintColor;
+				}
+				if (loc1 == OrangeJpro) 
+				{
+					tintColor.setTint(16737792, 0.9);
+					currentSelectedPad.transform.colorTransform = tintColor;
+					currentSelectedBlocker.transform.colorTransform = tintColor;
+					currentSelectedGlove.transform.colorTransform = tintColor;
+				}								
+				if (loc1 == MaroonJpro) 
+				{
+					tintColor.setTint(6684672, 0.9);
+					currentSelectedPad.transform.colorTransform = tintColor;
+					currentSelectedBlocker.transform.colorTransform = tintColor;
+					currentSelectedGlove.transform.colorTransform = tintColor;
+				}
+				if (loc1 == BronzeJpro) 
+				{
+					tintColor.setTint(12027213, 0.9);
+					currentSelectedPad.transform.colorTransform = tintColor;
+					currentSelectedBlocker.transform.colorTransform = tintColor;
+					currentSelectedGlove.transform.colorTransform = tintColor;
+				}
+				if (loc1 == ForestJpro) 
+				{
+					tintColor.setTint(345396, 0.9);
+					currentSelectedPad.transform.colorTransform = tintColor;
+					currentSelectedBlocker.transform.colorTransform = tintColor;
+					currentSelectedGlove.transform.colorTransform = tintColor;
+				}
+				if (loc1 == AntGoldJpro) 
+				{
+					tintColor.setTint(12623970, 0.9);
+					currentSelectedPad.transform.colorTransform = tintColor;
+					currentSelectedBlocker.transform.colorTransform = tintColor;
+					currentSelectedGlove.transform.colorTransform = tintColor;
+				}
+				if (loc1 == PurpleJpro) 
+				{
+					tintColor.setTint(2688854, 0.9);
+					currentSelectedPad.transform.colorTransform = tintColor;
+					currentSelectedBlocker.transform.colorTransform = tintColor;
+					currentSelectedGlove.transform.colorTransform = tintColor;
+				}
+				if (loc1 == TealJpro) 
+				{
+					tintColor.setTint(2646388, 0.9);
+					currentSelectedPad.transform.colorTransform = tintColor;
+					currentSelectedBlocker.transform.colorTransform = tintColor;
+					currentSelectedGlove.transform.colorTransform = tintColor;
+				}
+				if (loc1 == BrownJpro) 
+				{
+					tintColor.setTint(4138249, 0.9);
+					currentSelectedPad.transform.colorTransform = tintColor;
+					currentSelectedBlocker.transform.colorTransform = tintColor;
+					currentSelectedGlove.transform.colorTransform = tintColor;
+				}
+				if (loc1 == BuckyJpro) 
+				{
+					tintColor.setTint(5653292, 0.9);
+					currentSelectedPad.transform.colorTransform = tintColor;
+					currentSelectedBlocker.transform.colorTransform = tintColor;
+					currentSelectedGlove.transform.colorTransform = tintColor;
+				}
+				if (loc1 == RetroTanJpro) 
+				{
+					tintColor.setTint(11039796, 0.9);
+					currentSelectedPad.transform.colorTransform = tintColor;
+					currentSelectedBlocker.transform.colorTransform = tintColor;
+					currentSelectedGlove.transform.colorTransform = tintColor;
+				}
+				if (loc1 == WhiteWeave) 
+				{
+					tintColor.setTint(16777215, 0.1);
+					currentSelectedPad.transform.colorTransform = tintColor;
+					currentSelectedBlocker.transform.colorTransform = tintColor;
+					currentSelectedGlove.transform.colorTransform = tintColor;
+				}
+				if (loc1 == BlackWeave) 
+				{
+					tintColor.setTint(0, 0.9);
+					currentSelectedPad.transform.colorTransform = tintColor;
+					currentSelectedBlocker.transform.colorTransform = tintColor;
+					currentSelectedGlove.transform.colorTransform = tintColor;
+				}
+				if (loc1 == NavyWeave)
+				{
+					tintColor.setTint(1330, 0.9);
+					currentSelectedPad.transform.colorTransform = tintColor;
+					currentSelectedBlocker.transform.colorTransform = tintColor;
+					currentSelectedGlove.transform.colorTransform = tintColor;
+				}
+				if (loc1 == BlueWeave) 
+				{
+					tintColor.setTint(1653888, 0.9);
+					currentSelectedPad.transform.colorTransform = tintColor;
+					currentSelectedBlocker.transform.colorTransform = tintColor;
+					currentSelectedGlove.transform.colorTransform = tintColor;
+				}
+				if (loc1 == RedWeave) 
+				{
+					tintColor.setTint(16711680, 0.9);
+					currentSelectedPad.transform.colorTransform = tintColor;
+					currentSelectedBlocker.transform.colorTransform = tintColor;
+					currentSelectedGlove.transform.colorTransform = tintColor;
+				}
+				if (loc1 == SportGoldWeave) 
+				{
+					tintColor.setTint(16763904, 0.9);
+					currentSelectedPad.transform.colorTransform = tintColor;
+					currentSelectedBlocker.transform.colorTransform = tintColor;
+					currentSelectedGlove.transform.colorTransform = tintColor;
+				}
+				if (loc1 == SilverWeave) 
+				{
+					tintColor.setTint(12895428, 0.9);
+					currentSelectedPad.transform.colorTransform = tintColor;
+					currentSelectedBlocker.transform.colorTransform = tintColor;
+					currentSelectedGlove.transform.colorTransform = tintColor;
+				}
+				if (loc1 == AntGoldWeave) 
+				{
+					tintColor.setTint(12623970, 0.9);
+					currentSelectedPad.transform.colorTransform = tintColor;
+					currentSelectedBlocker.transform.colorTransform = tintColor;
+					currentSelectedGlove.transform.colorTransform = tintColor;
+				}
+				if (loc1 == ForestWeave) 
+				{
+					tintColor.setTint(345396, 0.9);
+					currentSelectedPad.transform.colorTransform = tintColor;
+					currentSelectedBlocker.transform.colorTransform = tintColor;
+					currentSelectedGlove.transform.colorTransform = tintColor;
+				}
+				if (loc1 == BronzeWeave) 
+				{
+					tintColor.setTint(12027213, 0.9);
+					currentSelectedPad.transform.colorTransform = tintColor;
+					currentSelectedBlocker.transform.colorTransform = tintColor;
+					currentSelectedGlove.transform.colorTransform = tintColor;
+				}
+				if (loc1 == BabyBlueWeave) 
+				{
+					tintColor.setTint(4630523, 0.9);
+					currentSelectedPad.transform.colorTransform = tintColor;
+					currentSelectedBlocker.transform.colorTransform = tintColor;
+					currentSelectedGlove.transform.colorTransform = tintColor;
+				}
+				if (loc1 == OrangeWeave) 
+				{
+					tintColor.setTint(16737792, 0.9);
+					currentSelectedPad.transform.colorTransform = tintColor;
+					currentSelectedBlocker.transform.colorTransform = tintColor;
+					currentSelectedGlove.transform.colorTransform = tintColor;
+				}
+				
+		}
 			
-			public function removeColorFour(arg1:flash.events.MouseEvent):*
-			{
-				flash.display.MovieClip(parent).Pads.ColorFour.visible = false;
-				flash.display.MovieClip(parent).Pads.ColorFour.ColorFourWeave.visible = false;
-				flash.display.MovieClip(parent).Glove.ColorFour.visible = false;
-				flash.display.MovieClip(parent).Glove.ColorFour.ColorFourWeave.visible = false;
-				flash.display.MovieClip(parent).Blocker.ColorFour.visible = false;
-				flash.display.MovieClip(parent).Blocker.ColorFour.ColorFourWeave.visible = false;
-				flash.display.MovieClip(parent).SpecSheetCover.Pads.ColorFour.visible = false;
-				flash.display.MovieClip(parent).SpecSheetCover.Pads.ColorFour.ColorFourWeave.visible = false;
-				flash.display.MovieClip(parent).SpecSheetCover.Glove.ColorFour.visible = false;
-				flash.display.MovieClip(parent).SpecSheetCover.Glove.ColorFour.ColorFourWeave.visible = false;
-				flash.display.MovieClip(parent).SpecSheetCover.Blocker.ColorFour.visible = false;
-				flash.display.MovieClip(parent).SpecSheetCover.Blocker.ColorFour.ColorFourWeave.visible = false;
-				this.RemoveColorFour.visible = false;
-				this.ShowGraphicFour.visible = true;
-				flash.display.MovieClip(parent).SpecSheetCover.FourthOutput.visible = false;
-				return;
-			}
+		public function takeScreenshot():void 
+		{
+			import flash.display.Bitmap;
+			import flash.display.BitmapData;
+			import flash.utils.ByteArray;
+			import flash.net.FileReference;
+			import PNGEnc;
 			
-			public function showColorFour(arg1:flash.events.MouseEvent):*
-			{
-				flash.display.MovieClip(parent).Pads.ColorFour.visible = true;
-				flash.display.MovieClip(parent).Pads.ColorFour.ColorFourWeave.visible = true;
-				flash.display.MovieClip(parent).Glove.ColorFour.visible = true;
-				flash.display.MovieClip(parent).Glove.ColorFour.ColorFourWeave.visible = true;
-				flash.display.MovieClip(parent).Blocker.ColorFour.visible = true;
-				flash.display.MovieClip(parent).Blocker.ColorFour.ColorFourWeave.visible = true;
-				flash.display.MovieClip(parent).SpecSheetCover.Pads.ColorFour.visible = true;
-				flash.display.MovieClip(parent).SpecSheetCover.Pads.ColorFour.ColorFourWeave.visible = true;
-				flash.display.MovieClip(parent).SpecSheetCover.Glove.ColorFour.visible = true;
-				flash.display.MovieClip(parent).SpecSheetCover.Glove.ColorFour.ColorFourWeave.visible = true;
-				flash.display.MovieClip(parent).SpecSheetCover.Blocker.ColorFour.visible = true;
-				flash.display.MovieClip(parent).SpecSheetCover.Blocker.ColorFour.ColorFourWeave.visible = true;
-				this.RemoveColorFour.visible = true;
-				this.ShowGraphicFour.visible = false;
-				flash.display.MovieClip(parent).SpecSheetCover.FourthOutput.visible = true;
-				return;
-			}
-		
-		
+			var bmd:BitmapData = new BitmapData(stage.stageWidth, stage.stageHeight, false, 0);
+			bmd.draw(this);
 			
+			var bild:ByteArray = PNGEnc.encode(bmd);
 			
+			var file:FileReference = new FileReference();
 			
-		
+			file.save(bild, "screenshot.png");
+			
+			trace("Taken Screenshot");	
+		}
 	
+		
+		//variable declarations
+		
 		public var ColorPanelSix:flash.display.MovieClip;
 		
 		public var ColorPanelThree:flash.display.MovieClip;
@@ -790,10 +786,6 @@ package
 		public var ColorThreeChooser:flash.display.MovieClip;
 		
 		public var Pads:flash.display.MovieClip;
-		
-		public var ToolTipEleven:flash.display.MovieClip;
-		
-		public var ToolTipSeven:flash.display.MovieClip;
 		
 		public var ColorPanelBindings:flash.display.MovieClip;
 		
@@ -805,14 +797,6 @@ package
 		
 		public var Blocker:flash.display.MovieClip;
 		
-		public var SpecPopout:flash.display.MovieClip;
-		
-		public var ToolTipSixteen:flash.display.MovieClip;
-		
-		public var ToolTipSix:flash.display.MovieClip;
-		
-		public var AddToGallery:flash.display.MovieClip;
-		
 		public var ColorThirteenChooser:flash.display.MovieClip;
 		
 		public var ColorPanelRoll:flash.display.MovieClip;
@@ -822,11 +806,7 @@ package
 		public var ColorFourteenChooser:flash.display.MovieClip;
 		
 		public var ColorOneChooser:flash.display.MovieClip;
-		
-		public var preloaderMC:flash.display.MovieClip;
-		
-		public var Specs:flash.display.MovieClip;
-		
+
 		public var ColorNineChooser:flash.display.MovieClip;
 		
 		public var ColorPanelLaces:flash.display.MovieClip;
@@ -851,8 +831,6 @@ package
 		
 		public var MoreViews:flash.display.MovieClip;
 		
-		public var ToolTipTwo:flash.display.MovieClip;
-		
 		public var ColorFifteenChooser:flash.display.MovieClip;
 		
 		public var ColorElevenChooser:flash.display.MovieClip;
@@ -869,27 +847,15 @@ package
 		
 		public var a:uint;
 		
-		public var alertDialog:flash.display.MovieClip;
-		
-		public var ToolTipTwelve:flash.display.MovieClip;
-		
 		public var ColorPanelStrap:flash.display.MovieClip;
-		
-		public var ToolTipFourteen:flash.display.MovieClip;
-		
-		public var speed:Number;
 		
 		public var PanelBtnArray:Array;
 		
 		public var c:uint;
 		
-		public var ToolTipNine:flash.display.MovieClip;
-		
 		public var highlightsArray:Array;
 		
 		public var p:uint;
-		
-		public var ToolTipEight:flash.display.MovieClip;
 		
 		public var ColorPanelOutline:flash.display.MovieClip;
 		
@@ -897,15 +863,7 @@ package
 		
 		public var ColorPanelBase:flash.display.MovieClip;
 		
-		public var ToolTipThree:flash.display.MovieClip;
-		
 		public var ViewsPopout:flash.display.MovieClip;
-		
-		public var ToolTipFive:flash.display.MovieClip;
-		
-		public var ToolTipOne:flash.display.MovieClip;
-		
-		public var alertsArray:Array;
 		
 		public var aa:uint;
 		
@@ -916,10 +874,6 @@ package
 		public var ColorEightChooser:flash.display.MovieClip;
 		
 		public var ColorSixChooser:flash.display.MovieClip;
-		
-		public var ToolTipFifteen:flash.display.MovieClip;
-		
-		public var ToolTipFour:flash.display.MovieClip;
 		
 		public var selectedColor:flash.text.TextField;
 		
@@ -992,7 +946,40 @@ package
 		public var RedJpro:flash.display.MovieClip;
 		
 		public var l:uint;
-	}
-}*/
-	}
-}
+		
+		public var backButton:flash.display.MovieClip;
+
+		public var testbutton:flash.display.MovieClip;
+		
+		public var ColorLegChannel:flash.display.MovieClip;
+		
+		public var menu1:flash.display.MovieClip;
+		
+		public var menu2:flash.display.MovieClip;
+		
+		public var nums:flash.display.MovieClip;
+		
+		public var Pads1:flash.display.MovieClip;
+
+		public var currentSelectedBlocker:DisplayObject;
+		
+		public var currentSelectedPad:DisplayObject;
+		
+		public var currentSelectedGlove:DisplayObject;
+		
+		public var resetButton:flash.display.MovieClip;
+		
+		public var blocker:flash.display.MovieClip;
+		
+		public var padView:flash.display.MovieClip;
+		
+		public var blockerView:flash.display.MovieClip;
+		
+		public var glove:flash.display.MovieClip;
+		
+		public var gloveView:flash.display.MovieClip;
+		
+		public var allView:flash.display.MovieClip;
+		
+		public var exportButton:flash.display.MovieClip;
+}}

@@ -38,7 +38,7 @@
     <UsingOwnAlternateFile>0</UsingOwnAlternateFile>
     <OwnAlternateFilename></OwnAlternateFilename>
     <Width>1136</Width>
-    <Height>640</Height>
+    <Height>670</Height>
     <Align>0</Align>
     <Units>0</Units>
     <Loop>1</Loop>
@@ -111,7 +111,7 @@
   </PublishFlashProperties>
   <PublishJpegProperties enabled="true">
     <Width>1136</Width>
-    <Height>640</Height>
+    <Height>670</Height>
     <Progressive>0</Progressive>
     <DPI>4718592</DPI>
     <Size>0</Size>
@@ -120,7 +120,7 @@
   </PublishJpegProperties>
   <PublishGifProperties enabled="true">
     <Width>1136</Width>
-    <Height>640</Height>
+    <Height>670</Height>
     <Animated>0</Animated>
     <MatchMovieDim>1</MatchMovieDim>
     <Loop>1</Loop>
